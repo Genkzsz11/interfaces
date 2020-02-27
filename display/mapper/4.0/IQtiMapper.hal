@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2019 The Linux Foundation. All rights reserved.
+* Copyright (c) 2019, 2020 The Linux Foundation. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -27,32 +27,19 @@
 * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-package vendor.qti.hardware.display.composer@2.0;
+package vendor.qti.hardware.display.mapper@4.0;
 
-import android.hardware.graphics.composer@2.3::IComposerClient;
+import android.hardware.graphics.mapper@4.0;
+import android.hardware.graphics.mapper@4.0::types;
+import vendor.qti.hardware.display.mapperextensions@1.0::IQtiMapperExtensions;
 
-interface IQtiComposerClient extends IComposerClient {
-
-    enum LayerType : uint32_t {
-        UNKNOWN = 0,
-        APP = 1,
-        GAME = 2,
-        BROWSER = 3,
-    };
-
-    /**
-      * SET_LAYER_TYPE has this pseudo prototype
-      * setLayerType(uint32_t type);
-      *
-      * param type is the layer type.
-      *            0 - Unknown
-      *            1 - APP
-      *            2 - Game
-      *            3 - Browser
-      */
-    enum Command : @2.3::IComposerClient.Command {
-        SET_LAYER_TYPE = 0x800 << @2.3::IComposerClient.Command:OPCODE_SHIFT,
-    };
-
+interface IQtiMapper extends IMapper {
+    /*
+     * Returns an interface to QTI specific extensions for IMapper
+     * If there are newer versions of IQtiMapper with the same major revision (1)
+     * the client can cast this extensions object to a newer revision
+     */
+    @callflow(next="*")
+    getMapperExtensions() generates (Error error, IQtiMapperExtensions extensions);
 };
 
